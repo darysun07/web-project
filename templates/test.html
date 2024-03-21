@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+<header>
+    <nav class="navbar navbar-light bg-light">
+        <h1>PODASH</h1>
+        <ul class="navbar-nav">
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">{{ current_user.name }}</a>
+            </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Log in</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Корзина</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<h1>PODASH</h1>
+    <ul class="header-nav">
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+            <a href="#">{{ current_user.name }}</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a href="/register">Регистрация</a>
+        </li>
+        <li class="nav-item">
+            <a href="/login">Вход</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+            <a href="#">Корзина</a>
+        </li>
+    </ul>
+
+
+<header class="header">
+
+    <h1>PODASH</h1>
+    <ul class="header-nav">
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+            <a href="#">{{ current_user.name }}</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a href="/register">Регистрация</a>
+        </li>
+        <li class="nav-item">
+            <a href="/login">Вход</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+            <a href="#">Корзина</a>
+        </li>
+    </ul>
+</header>
