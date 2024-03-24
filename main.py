@@ -60,10 +60,7 @@ def login():
 
 @app.route("/")
 def index():
-    db_sess = db_session.create_session()
-    users = db_sess.query(User).all()
-    names = {name.id: (name.surname, name.name) for name in users}
-    return render_template("index.html", names=names, title='Главная')
+    return render_template("index.html", title='Главная')
 
 
 @app.route('/logout')
