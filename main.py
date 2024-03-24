@@ -32,8 +32,11 @@ def reqister():
             return render_template('register.html', title='Регистрация', form=form,
                                    message="Такой пользователь уже есть")
         user = User(
+            surname=form.surname.data,
             name=form.name.data,
-            email=form.email.data
+            age=form.age.data,
+            email=form.email.data,
+
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -52,7 +55,7 @@ def login():
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
         return render_template('login.html', message="Wrong login or password", form=form)
-    return render_template('login.html', title='Authorization', form=form)
+    return render_template('login.html', title='Авторизация', form=form)
 
 
 @app.route("/")
@@ -60,7 +63,7 @@ def index():
     db_sess = db_session.create_session()
     users = db_sess.query(User).all()
     names = {name.id: (name.surname, name.name) for name in users}
-    return render_template("index.html", names=names, title='Name log')
+    return render_template("index.html", names=names, title='Главная')
 
 
 @app.route('/logout')
