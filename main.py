@@ -70,8 +70,18 @@ def logout():
     return redirect("/")
 
 
+@app.route('/cart')
+def cart():
+    return render_template("cart.html", title='Корзина')
+
+
+@app.route('/profile')
+def profile():
+    return render_template("profile.html", title='Профиль')
+
+
 def main():
-    db_session.global_init("db/mars_explorer.sqlite")
+    db_session.global_init("db/logged_users.sqlite")
     app.run()
 
 
