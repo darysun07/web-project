@@ -29,16 +29,21 @@
     background-color: #ebc4eb;
 }
 h3 {
-    margin-left: 250px;
     padding-top: 20px;
     margin-bottom: 30px
 }
 .nav-cat {
-    margin-left: 250px;
     font-size: 30px;
-    padding-top: 7px
+    padding-top: 7px;
 }
 
+.nav-cat a{
+    color: #9744be;
+}
+
+::marker {
+  color: plum;
+}
 .navbar-logo a {
     font-size: 30px;
     font-weight: 600;
