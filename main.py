@@ -20,6 +20,11 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
+@app.route("/")
+def index():
+    return render_template("index.html", title='Главная')
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
@@ -56,11 +61,6 @@ def login():
             return redirect("/")
         return render_template('login.html', message="Wrong login or password", form=form)
     return render_template('login.html', title='Авторизация', form=form)
-
-
-@app.route("/")
-def index():
-    return render_template("index.html", title='Главная')
 
 
 @app.route('/logout')
