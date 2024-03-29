@@ -32,6 +32,11 @@ h3 {
     padding-top: 20px;
     margin-bottom: 30px
 }
+
+h4 {
+    color: #a52a2a
+}
+
 .nav-cat {
     font-size: 30px;
     padding-top: 7px;

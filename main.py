@@ -31,11 +31,11 @@ def reqister():
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
             return render_template('register.html', title='Регистрация', form=form,
-                                   message="Пароли не совпадают")
+                                   message="! Пароли не совпадают !")
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Регистрация', form=form,
-                                   message="Такой пользователь уже есть")
+                                   message="! Такой пользователь уже есть !")
         user = User(
             surname=form.surname.data,
             name=form.name.data,
@@ -59,7 +59,7 @@ def login():
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
-        return render_template('login.html', message="Wrong login or password", form=form)
+        return render_template('login.html', message="! Неверный логин или пароль !", form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
 
