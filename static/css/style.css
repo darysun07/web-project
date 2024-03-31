@@ -28,7 +28,27 @@
 .navbar {
     background-color: #ebc4eb;
 }
+h3 {
+    padding-top: 20px;
+    margin-bottom: 30px
+}
 
+h4 {
+    color: #a52a2a
+}
+
+.nav-cat {
+    font-size: 30px;
+    padding-top: 7px;
+}
+
+.nav-cat a{
+    color: #9744be;
+}
+
+::marker {
+  color: plum;
+}
 .navbar-logo a {
     font-size: 30px;
     font-weight: 600;
