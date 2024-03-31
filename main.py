@@ -25,6 +25,11 @@ def index():
     return render_template("index.html", title='Главная')
 
 
+@app.route('/about')
+def about():
+    return render_template('abt.html', title='О магазине')
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
@@ -82,7 +87,7 @@ def profile():
 
 def main():
     db_session.global_init("db/logged_users.sqlite")
-    app.run()
+    app.run(debug=True)
 
 
 if __name__ == '__main__':
