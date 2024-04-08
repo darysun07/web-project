@@ -80,6 +80,10 @@ def profile():
     return render_template("profile.html", title='Профиль')
 
 
+@app.route('/abt')
+def about():
+    return render_template('abt.html', title='О компании')
+
 def main():
     db_session.global_init("db/logged_users.sqlite")
     app.run()
