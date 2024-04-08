@@ -84,6 +84,12 @@ def profile():
 def about():
     return render_template('abt.html', title='О компании')
 
+
+@app.route('/dveloprs')
+def developers():
+    return render_template('dveloprs.html', title='Создатели сайта')
+
+
 def main():
     db_session.global_init("db/logged_users.sqlite")
     app.run()
