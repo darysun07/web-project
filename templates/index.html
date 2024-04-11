@@ -3,18 +3,11 @@
 {% block content %}
 <h2 align="center">Магазин косметики PODASH</h2>
 <h3>Категории</h3>
+{%for category in categories%}
 <ul type="disc">
     <li class="nav-cat">
-        <a href="#">Помада</a>
-    </li>
-    <li class="nav-cat">
-        <a href="#">Тушь для ресниц</a>
-    </li>
-    <li class="nav-cat">
-        <a href="#">Пудра</a>
-    </li>
-    <li class="nav-cat">
-        <a href="#">Тени</a>
+        <a href="/{{category}}">{{category}}</a>
     </li>
 </ul>
+{%endfor%}
 {% endblock %}

@@ -60,7 +60,14 @@ def login():
 
 @app.route("/")
 def index():
-    return render_template("index.html", title='Главная')
+    categories = ['Помада', 'Тушь для ресниц', 'Пудра', 'Тени']
+    return render_template("index.html", title='Главная', categories=categories)
+
+
+@app.route("/<name_class>")
+def name_class(name_class):
+    return render_template('category.html', title=f'{str(name_class).capitalize()}',
+                           cat=f'{str(name_class).capitalize()}')
 
 
 @app.route('/logout')
