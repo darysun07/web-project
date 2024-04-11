@@ -1,10 +1,11 @@
+import json
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user
 
 
 from data import db_session
-from data.register import RegisterForm
-from data.login_form import LoginForm
+from flask_forms.register import RegisterForm
+from flask_forms.login_form import LoginForm
 from data.users import User
 
 app = Flask(__name__)
@@ -12,6 +13,12 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
+def load_product():
+    with open('static/product.json', 'r', encoding='utf-8') as file:
+        product = json.load(file)
+    return product
 
 
 @login_manager.user_loader
@@ -66,8 +73,9 @@ def index():
 
 @app.route("/<name_class>")
 def name_class(name_class):
-    return render_template('category.html', title=f'{str(name_class).capitalize()}',
-                           cat=f'{str(name_class).capitalize()}')
+    product = load_product()
+    return render_template('product.html', title=f'{str(name_class).capitalize()}',
+                           name=f'{str(name_class).capitalize()}', product=product)
 
 
 @app.route('/logout')
