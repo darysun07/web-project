@@ -3,7 +3,7 @@ from data.db_session import SqlAlchemyBase
 
 
 class Product(SqlAlchemyBase):
-    __tablename__ = 'Prdct'
+    __tablename__ = 'Product'
 
     Id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
 
@@ -17,4 +17,4 @@ class Product(SqlAlchemyBase):
 
     ImgId = sqlalchemy.Column(sqlalchemy.Integer)
 
-    Ctgry = sqlalchemy.Column(sqlalchemy.Integer)
+    Category = sqlalchemy.Column(sqlalchemy.Integer)
