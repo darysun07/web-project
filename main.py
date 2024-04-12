@@ -3,10 +3,10 @@ from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user
 
 import data
-from data.ctgry import Category
-from data.crt_prdct import CartsProduct
-from data.prdct import Product
-from data.cart import Cart
+# from data.ctgry import Category
+# from data.crt_prdct import CartsProduct
+# from data.prdct import Product
+# from data.cart import Cart
 from data import db_session
 from flask_forms.register import RegisterForm
 from flask_forms.login_form import LoginForm
