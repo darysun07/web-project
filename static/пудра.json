@@ -1,12 +1,12 @@
 [
     {
-        "name": "Пудра Babor",
-        "description": "500",
-        "image": "static/img/6040573606.jpg"
+        "name": "Пудра 'Gucci'",
+        "description": "4500",
+        "image": "static/img/gucci.png"
     },
     {
-        "name": "Пудра L'oreal",
-        "description": "350",
-        "image": "static/img/6.014.11.0.png"
+        "name": "Пудра 'Chanel'",
+        "description": "6350",
+        "image": "static/img/chanel.jpg"
     }
 ]

@@ -6,13 +6,13 @@
     {{ form.hidden_tag() }}
     <p>
         {{ form.card.label }}
-        {{ form.card(class="form-control", type="text") }}
+        {{ form.card(class="form-control", type="int") }}
     </p>
     <p>
         {{ form.address.label }}
         {{ form.address(class="form-control", type="text") }}
     </p>
-    <p>Сумма к оплате: {{ summ }} р.</p>
-    <p style="margin-bottom: .25rem;">{{ form.submit(type="submit", class="btn btn-outline-dark") }}</p>
+    <p>Сумма к оплате: {{ summ }}р.</p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
 </form>
 {% endblock %}

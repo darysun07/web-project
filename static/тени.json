@@ -1,12 +1,12 @@
 [
     {
-        "name": "Тени Babor",
-        "description": "500",
+        "name": "Тени 'Ga-De'",
+        "description": "1300",
         "image": "static/img/6493324044.jpg"
     },
     {
-        "name": "Тени L'oreal",
-        "description": "350",
-        "image": "static/img/6.014.11.0.png"
+        "name": "Тени 'Clarins'",
+        "description": "2350",
+        "image": "static/img/clarins.jpg"
     }
 ]

@@ -1,12 +1,12 @@
 [
     {
-        "name": "Тушь Babor",
-        "description": "500",
+        "name": "Тушь 'TianDe'",
+        "description": "3800",
         "image": "static/img/80402 (1).png"
     },
     {
-        "name": "Помада L'oreal",
-        "description": "350",
-        "image": "static/img/6.014.11.0.png"
+        "name": "Помада 'IsaDora'",
+        "description": "5750",
+        "image": "static/img/isadora.jpg"
     }
 ]

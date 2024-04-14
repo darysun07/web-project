@@ -10,6 +10,14 @@ h4 {
     color: #a52a2a
 }
 
+h6 {
+    font-size: 25px;
+}
+
+h5{
+    text-align: center;
+    font-size: 45px;
+}
 .nav-cat {
     font-size: 30px;
     padding-top: 7px;
@@ -54,10 +62,7 @@ h4 {
 .dv a {
     color: #9744be
 }
-/*.linki a:hover {
-    color: #CE242B;
-    text-decoration: underline;
-}*/
+
 body {
   min-height: 100vh;
   display: grid;
@@ -66,4 +71,26 @@ body {
 main {
   margin: 0 auto;
   max-width: 80ch;
+}
+
+.product img{
+    width: 300px
+}
+.product{
+    margin-bottom: 45px
+}
+.button {
+    top:50%;
+    background-color:#9744be;
+    color: #fff;
+    border:none;
+    border-radius:10px;
+    padding:15px;
+    min-height:30px;
+    min-width: 120px;
+    font-size: 19px;
+  }
+.button:hover{
+    background-color:#7200a3;
+    transition: 0.7s;
 }

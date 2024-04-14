@@ -1,12 +1,12 @@
 [
     {
-        "name": "Помада Babor",
-        "description": "500",
-        "image": "static/img/6.014.11.0.png"
+        "name": "Помада 'Dolce & Gabbana'",
+        "description": "1500",
+        "image": "static/img/6888387027.jpg"
     },
     {
-        "name": "Помада L'oreal",
-        "description": "350",
+        "name": "Помада 'Babor'",
+        "description": "650",
         "image": "static/img/6.014.11.0.png"
     }
 ]
