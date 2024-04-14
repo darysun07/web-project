@@ -7,11 +7,11 @@ from flask_login import LoginManager, login_user, login_required, logout_user
 # from data.crt_prdct import CartsProduct
 # from data.prdct import Product
 # from data.cart import Cart
+
 from data import db_session
 from flask_forms.register import RegisterForm
 from flask_forms.login_form import LoginForm
 from data.users import User
-import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -36,7 +36,7 @@ def add_to_cart(user, product):
 def load_product(name_class):
     with open(f'static/{str(name_class).capitalize()}.json', 'r', encoding='utf-8') as file:
         product = json.load(file)
-    return product
+        return product
 
 
 @login_manager.user_loader

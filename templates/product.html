@@ -8,13 +8,13 @@
             <div class="serial-info">
                 <h2>{{ pr.name }}</h2>
                 <p>{{ pr.description }}</p>
-            </div>
             <form method="post" action="">
                         <button type="submit" class="btn btn-outline-dark
                         center-block col mx-auto stretched-link" name="add" value="{{ pr.name }}">
                             Добавить в корзину
                         </button>
                     </form>
+                </div>
         </div>
     {% endfor %}
 {% endblock %}
