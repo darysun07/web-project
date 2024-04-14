@@ -237,14 +237,14 @@ def cart():
 @app.route('/payment', methods=['GET', 'POST'])
 def payment():
     form = PaymentForm()
-    global summ
+    summ = 0
     if request.method == 'POST':
-        # db_sess = db_session.create_session()
-        # owner = db_sess.query(Cart.Id).filter(Cart.Owner == flask_login.current_user.id).first()
-        # res = db_sess.query(CartsProduct).filter(CartsProduct.OwnerCart == owner[0]).all()
-        # for product in res:
-        #     db_sess.delete(product)
-        #     db_sess.commit()
+        db_sess = db_session.create_session()
+        owner = db_sess.query(Cart.Id).filter(Cart.Owner == flask_login.current_user.id).first()
+        res = db_sess.query(CartsProduct).filter(CartsProduct.OwnerCart == owner[0]).all()
+        for product in res:
+            db_sess.delete(product)
+            db_sess.commit()
         summ = 0
         return redirect('/success')
     return render_template('payment.html', title='Оплата', form=form, summ=summ)
