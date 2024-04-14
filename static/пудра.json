@@ -1,12 +1,12 @@
 [
     {
         "name": "Пудра Babor",
-        "description": "500р",
+        "description": "500",
         "image": "static/img/6040573606.jpg"
     },
     {
-        "name": "Помада L'oreal",
-        "description": "350р",
+        "name": "Пудра L'oreal",
+        "description": "350",
         "image": "static/img/6.014.11.0.png"
     }
 ]

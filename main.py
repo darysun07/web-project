@@ -24,6 +24,14 @@ cart_prods = {}
 
 def add_to_cart(user, product):
     global cart_prods
+    print(product.split()[0].lower())
+    with open(f'static/{product.split()[0].lower()}.json') as f:
+        data = json.load(f)
+        for i in data:
+            print(i)
+            if i["name"] == product:
+                cost = i["description"]
+                print(cost)
     if user not in cart_prods:
         cart_prods[user] = [product]
         print(cart_prods[user])
@@ -126,7 +134,6 @@ def cart():
     with open('static/cart.json') as file:
         data = json.load(file)
         prod = data[flask_login.current_user.name]
-    #prod = get_prod()
     return render_template("cart.html", title='Корзина', prod=prod)
 
 

@@ -3,4 +3,12 @@
 {% block content %}
 <h2 align="center">Корзина товаров</h2>
 <p>{{prod}}</p>
+<div class="mb-2">
+    <a href="/delete">Удалить товар</a>
+</div>
+<!--    <p>Сумма: {{ summ }} р.</p>-->
+<div class="m-2">
+    <a href="/payment" class="btn btn-outline-dark mt-5
+    mb-2">Оплатить</a>
+</div>
 {% endblock %}
