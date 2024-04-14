@@ -1,12 +1,12 @@
 [
     {
         "name": "Тени Babor",
-        "description": "500р",
+        "description": "500",
         "image": "static/img/6493324044.jpg"
     },
     {
-        "name": "Помада L'oreal",
-        "description": "350р",
+        "name": "Тени L'oreal",
+        "description": "350",
         "image": "static/img/6.014.11.0.png"
     }
 ]

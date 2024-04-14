@@ -20,30 +20,28 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 cart_prods = {}
+summ = 0
 
 
 def add_to_cart(user, product):
-    global cart_prods
+    global cart_prods, summ
     print(product.split()[0].lower())
-    with open(f'static/{product.split()[0].lower()}.json') as f:
+    with open(f'static/{product.split()[0].lower()}.json', encoding='utf-8') as f:
         data = json.load(f)
         for i in data:
             print(i)
             if i["name"] == product:
                 cost = i["description"]
                 print(cost)
+                summ += int(cost)
     if user not in cart_prods:
-        cart_prods[user] = [product]
+        cart_prods[user] = [f'{product} - {cost}р\n']
         print(cart_prods[user])
     else:
-        cart_prods[user].append(product)
+        cart_prods[user].append(f'{product} - {cost}р\n')
     print(cart_prods)
-    with open('static/cart.json', 'w') as file:
+    with open('static/cart.json', 'w', encoding='utf-8') as file:
         json.dump(cart_prods, file)
-
-
-def get_prod(prod):
-    return prod
 
 
 def load_product(name_class):
@@ -98,7 +96,7 @@ def login():
 
 @app.route("/")
 def index():
-    categories = ['Помада', 'Тушь для ресниц', 'Пудра', 'Тени']
+    categories = ['Помада', 'Тушь', 'Пудра', 'Тени']
     return render_template("index.html", title='Главная', categories=categories)
 
 
@@ -113,8 +111,7 @@ def name_class(name_class):
             #user = db_sess.query(User).filter(User.id == flask_login.current_user.id).first()
             user = flask_login.current_user.name
             #print(flask_login.current_user.name)
-            prod = request.form['add']
-            get_prod(prod)
+            #prod = request.form['add']
             add_to_cart(user, request.form['add'])
             print(request.form['add'])
     product = load_product(name_class)
@@ -131,10 +128,13 @@ def logout():
 
 @app.route('/cart')
 def cart():
-    with open('static/cart.json') as file:
+    global summ
+    if not flask_login.current_user.is_authenticated:
+        return redirect("/login")
+    with open('static/cart.json', encoding='utf-8') as file:
         data = json.load(file)
-        prod = data[flask_login.current_user.name]
-    return render_template("cart.html", title='Корзина', prod=prod)
+        prod = ''.join(data[flask_login.current_user.name])
+    return render_template("cart.html", title='Корзина', prod=prod, summ=summ)
 
 
 #@app.route('/')
