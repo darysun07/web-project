@@ -1,6 +1,7 @@
 import json, flask_login
 from flask import Flask, render_template, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_forms.payment import PaymentForm
 
 # import data
 # from data.ctgry import Category
@@ -136,7 +137,30 @@ def cart():
         prod = ''.join(data[flask_login.current_user.name])
     return render_template("cart.html", title='Корзина', prod=prod, summ=summ)
 
+@app.route('/delete/<product>')
+def delete_c_p(product):
+    global summ
+    # db_sess = db_session.create_session()
+    # res = db_sess.query(CartsProduct).filter(CartsProduct.Id == product).first()
+    # db_sess.delete(res)
+    # db_sess.commit()
+    summ = 0
+    return redirect('/cart')
 
+@app.route('/payment', methods=['GET', 'POST'])
+def payment():
+    form = PaymentForm()
+    global summ
+    if request.method == 'POST':
+        db_sess = db_session.create_session()
+        #owner = db_sess.query(Cart.Id).filter(Cart.Owner == flask_login.current_user.id).first()
+        #res = db_sess.query(CartsProduct).filter(CartsProduct.OwnerCart == owner[0]).all()
+        #for product in res:
+            #db_sess.delete(product)
+            #db_sess.commit()
+        summ = 0
+        return redirect('/success')
+    return render_template('payment.html', title='Оплата', form=form, summ=summ)
 #@app.route('/')
 #def base():
 #    db_sess = db_session.create_session()
