@@ -11,7 +11,6 @@ from data import db_session
 from flask_forms.register import RegisterForm
 from flask_forms.login_form import LoginForm
 from data.users import User
-import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
