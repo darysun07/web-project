@@ -260,7 +260,7 @@ def about():
 
 @app.route('/dveloprs')
 def developers():
-    return render_template('dveloprs.html', title='Сайт')
+    return render_template('dveloprs.html', title='Сайтик')
 
 
 def main():
