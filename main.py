@@ -3,10 +3,10 @@ from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user
 
 import data
-# from data.ctgry import Category
-# from data.crt_prdct import CartsProduct
-# from data.prdct import Product
-# from data.cart import Cart
+from data.ctgry import Category
+from data.crt_prdct import CartsProduct
+from data.prdct import Product
+from data.cart import Cart
 from data import db_session
 from flask_forms.register import RegisterForm
 from flask_forms.login_form import LoginForm
@@ -19,8 +19,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-def load_product(name):
-    with open(f'static/{str(name).capitalize()}.json', 'r', encoding='utf-8') as file:
+def load_product():
+    with open('static/product.json', 'r', encoding='utf-8') as file:
         product = json.load(file)
     return product
 
@@ -47,6 +47,7 @@ def reqister():
             name=form.name.data,
             age=form.age.data,
             email=form.email.data,
+
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -76,7 +77,7 @@ def index():
 
 @app.route("/<name_class>")
 def name_class(name_class):
-    product = load_product(name_class)
+    product = load_product()
     return render_template('product.html', title=f'{str(name_class).capitalize()}',
                            name=f'{str(name_class).capitalize()}', product=product)
 
@@ -91,13 +92,6 @@ def logout():
 @app.route('/cart')
 def cart():
     return render_template("cart.html", title='Корзина')
-
-# @app.route('/')
-# def base():
-#     db_sess = db_session.create_session()
-#     res = db_sess.query(Category.Name).all()
-#     categories = [category[0] for category in res]
-#     return render_template('main.html', title='Главная страница', categories=categories)
 
 
 #@app.route('/<Cate>', methods=['GET', 'POST'])
@@ -159,7 +153,7 @@ def cart():
 #         summ += price[0]
 #         ID = prd[1]
 #         products.append([product, ID])
-#     return render_template('cart.html', title='Коризна', products=products, summ=summ)
+#     return render_template('cart.html', title='Корзина', products=products, summ=summ)
 #
 #
 # @app.route('/payment', methods=['GET', 'POST'])
