@@ -9,6 +9,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user
 # from data.cart import Cart
 
 from data import db_session
+from flask_forms.payment import PaymentForm
 from flask_forms.register import RegisterForm
 from flask_forms.login_form import LoginForm
 from data.users import User
@@ -235,9 +236,18 @@ def cart():
 #
 @app.route('/payment', methods=['GET', 'POST'])
 def payment():
-    product = load_product(name_class)
-
-    return render_template('payment.html', title='Оплата', product=product)
+    form = PaymentForm()
+    global summ
+    if request.method == 'POST':
+        # db_sess = db_session.create_session()
+        # owner = db_sess.query(Cart.Id).filter(Cart.Owner == flask_login.current_user.id).first()
+        # res = db_sess.query(CartsProduct).filter(CartsProduct.OwnerCart == owner[0]).all()
+        # for product in res:
+        #     db_sess.delete(product)
+        #     db_sess.commit()
+        summ = 0
+        return redirect('/success')
+    return render_template('payment.html', title='Оплата', form=form, summ=summ)
 #
 #
 #@app.route('/success')
