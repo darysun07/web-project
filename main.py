@@ -126,7 +126,20 @@ def cart():
     with open('static/cart.json') as file:
         data = json.load(file)
         prod = data[flask_login.current_user.name]
-    #prod = get_prod()
+        # global summ
+        # summ = 0
+        # db_sess = db_session.create_session()
+        # res = db_sess.query(Cart.Id).filter(Cart.Owner == flask_login.current_user.id).first()
+        # prdcts = db_sess.query(CartsProduct.ProductId, CartsProduct.Id).filter(
+        #     CartsProduct.OwnerCart == res[0]).all()
+        # products = []
+        # for prd in prdcts:
+        #     product = db_sess.query(Product).filter(Product.Id == prd[0]).first()
+        #     price = db_sess.query(Product.Price).filter(Product.Id == prd[0]).first()
+        #     summ += price[0]
+        #     ID = prd[1]
+        #     products.append([product, ID])
+    # prod = get_prod()
     return render_template("cart.html", title='Корзина', prod=prod)
 
 
@@ -184,8 +197,8 @@ def cart():
 #
 #
 
-#@app.route('/cart')
-#def cart():
+# @app.route('/cart')
+# def cart():
 #    global summ
 #    summ = 0
 #    db_sess = db_session.create_session()
@@ -220,26 +233,27 @@ def cart():
 
 #
 #
-#@app.route('/payment', methods=['GET', 'POST'])
-#def payment():
-#    global summ
-#    form = PaymentForm()
-#    if request.method == 'POST':
-#        db_sess = db_session.create_session()
-#        owner = db_sess.query(Cart.Id).filter(Cart.Owner == flask_login.current_user.id).first()
-#        res = db_sess.query(CartsProduct).filter(CartsProduct.OwnerCart == owner[0]).all()
-#        for product in res:
-#            db_sess.delete(product)
-#            db_sess.commit()
-#        summ = 0
-#        return redirect('/success')
-#    return render_template('payment.html', title='Оплата', form=form, summ=summ)
+@app.route('/payment', methods=['GET', 'POST'])
+def payment():
+    product = load_product(name_class)
+
+    return render_template('payment.html', title='Оплата', product=product)
 #
 #
 #@app.route('/success')
 #def success():
 #    return render_template('success.html', title='Hypewave')
 
+
+@app.route('/delete/<product>')
+def delete_c_p(product):
+    global summ
+    # db_sess = db_session.create_session()
+    # res = db_sess.query(CartsProduct).filter(CartsProduct.Id == product).first()
+    # db_sess.delete(res)
+    # db_sess.commit()
+    summ = 0
+    return redirect('/cart')
 
 @app.route('/profile')
 def profile():
