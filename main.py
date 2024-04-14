@@ -33,8 +33,8 @@ def add_to_cart(user, product):
         #json.dump(cart_prods, file)
 
 
-def load_product(name):
-    with open(f'static/{str(name).capitalize()}.json', 'r', encoding='utf-8') as file:
+def load_product(name_class):
+    with open(f'static/{str(name_class).capitalize()}.json', 'r', encoding='utf-8') as file:
         product = json.load(file)
     return product
 
@@ -61,6 +61,7 @@ def reqister():
             name=form.name.data,
             age=form.age.data,
             email=form.email.data,
+
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -126,6 +127,7 @@ def cart():
 #    return render_template('index.html', title='Главная страница', categories=categories)
 
 
+
 #app.route('/<Cate>', methods=['GET', 'POST'])
 #def cat(Cate):
 #    name = str(request.url).split('/')[-1]
@@ -170,6 +172,7 @@ def cart():
 #    return render_template('product.html', title=res[0], product=res, Cate=Cate)
 #
 #
+
 #@app.route('/cart')
 #def cart():
 #    global summ
@@ -186,6 +189,24 @@ def cart():
 #        ID = prd[1]
 #        products.append([product, ID])
 #    return render_template('cart.html', title='Коризна', products=products, summ=summ)
+
+# @app.route('/cart')
+# def cart():
+#     global summ
+#     summ = 0
+#     db_sess = db_session.create_session()
+#     res = db_sess.query(Cart.Id).filter(Cart.Owner == flask_login.current_user.id).first()
+#     prdcts = db_sess.query(CartsProduct.ProductId, CartsProduct.Id).filter(
+#         CartsProduct.OwnerCart == res[0]).all()
+#     products = []
+#     for prd in prdcts:
+#         product = db_sess.query(Product).filter(Product.Id == prd[0]).first()
+#         price = db_sess.query(Product.Price).filter(Product.Id == prd[0]).first()
+#         summ += price[0]
+#         ID = prd[1]
+#         products.append([product, ID])
+#     return render_template('cart.html', title='Корзина', products=products, summ=summ)
+
 #
 #
 #@app.route('/payment', methods=['GET', 'POST'])
