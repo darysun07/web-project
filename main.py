@@ -26,11 +26,16 @@ def add_to_cart(user, product):
     global cart_prods
     if user not in cart_prods:
         cart_prods[user] = [product]
+        print(cart_prods[user])
     else:
-        cart_prods[user] = cart_prods[user].append(product)
+        cart_prods[user].append(product)
     print(cart_prods)
-    #with open('static/cart.json', 'w') as file:
-        #json.dump(cart_prods, file)
+    with open('static/cart.json', 'w') as file:
+        json.dump(cart_prods, file)
+
+
+def get_prod(prod):
+    return prod
 
 
 def load_product(name_class):
@@ -100,6 +105,8 @@ def name_class(name_class):
             #user = db_sess.query(User).filter(User.id == flask_login.current_user.id).first()
             user = flask_login.current_user.name
             #print(flask_login.current_user.name)
+            prod = request.form['add']
+            get_prod(prod)
             add_to_cart(user, request.form['add'])
             print(request.form['add'])
     product = load_product(name_class)
@@ -116,7 +123,11 @@ def logout():
 
 @app.route('/cart')
 def cart():
-    return render_template("cart.html", title='Корзина')
+    with open('static/cart.json') as file:
+        data = json.load(file)
+        prod = data[flask_login.current_user.name]
+    #prod = get_prod()
+    return render_template("cart.html", title='Корзина', prod=prod)
 
 
 #@app.route('/')
