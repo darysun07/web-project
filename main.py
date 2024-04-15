@@ -103,7 +103,6 @@ def name_class(name_class):
     db_sess = db_session.create_session()
     if request.method == 'POST':
         if not flask_login.current_user.is_authenticated:
-            print(1)
             return redirect("/login")
         elif flask_login.current_user.is_authenticated:
             user = flask_login.current_user.name
