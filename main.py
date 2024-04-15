@@ -1,5 +1,5 @@
 import json, flask_login
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, flash
 from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_forms.payment import PaymentForm
 
@@ -35,9 +35,9 @@ def add_to_cart(user, product):
                 summ += int(cost)
     #print(summ)
     if user not in cart_prods:
-        cart_prods[user] = [f'{product} - {cost}р\n']
+        cart_prods[user] = [f'{product} - {cost}р']
     else:
-        cart_prods[user].append(f'{product} - {cost}р\n')
+        cart_prods[user].append(f'{product} - {cost}р')
     with open('static/cart.json', 'w', encoding='utf-8') as file:
         json.dump(cart_prods, file)
 
@@ -108,6 +108,7 @@ def name_class(name_class):
         elif flask_login.current_user.is_authenticated:
             user = flask_login.current_user.name
             add_to_cart(user, request.form['add'])
+            #flash('Товар добавлен в корзину')
     product = load_product(name_class)
     return render_template('product.html', title=f'{str(name_class).capitalize()}',
                            name=f'{str(name_class).capitalize()}', product=product)
@@ -127,7 +128,8 @@ def cart():
         return redirect("/login")
     with open('static/cart.json', encoding='utf-8') as file:
         data = json.load(file)
-        prod = ''.join(data[flask_login.current_user.name])
+        prod = data[flask_login.current_user.name]
+        print(prod)
     return render_template("cart.html", title='Корзина', prod=prod, summ=summ)
 
 

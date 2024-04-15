@@ -2,11 +2,14 @@
 
 {% block content %}
 <h2 align="center">Корзина товаров</h2>
-<br><p>{{prod}}</p>
+{%for pr in prod%}
+    <br><h6>{{pr}}</h6>
+    {% endfor %}
+<!--<br><h6>{{prod}}</h6>-->
 <!--<div class="mb-2">
     <a href="/delete">Удалить товар</a>
 </div>-->
-    <p>Сумма: {{ summ }}р.</p>
+<br><h6>Сумма: {{ summ }}р.</h6>
 <div class="m-2">
     <a href="/payment" class="btn btn-primary">Оплатить</a>
 </div>
