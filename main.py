@@ -155,7 +155,11 @@ def payment():
 def finish():
     global summ
     summ = 0
-    #with open('static/cart.json', 'w', encoding='utf-8') as f:
+    with open('static/cart.json', encoding='utf-8') as f:
+        data = json.load(f)
+    data[flask_login.current_user.name] = []
+    with open('static/cart.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f)
     return render_template('finish.html', title='Оплачено')
 
 
