@@ -1,4 +1,5 @@
 import json, flask_login
+import os.path
 from flask import Flask, render_template, redirect, request, flash
 from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_forms.payment import PaymentForm
@@ -157,6 +158,17 @@ def finish():
     summ = 0
     with open('static/cart.json', encoding='utf-8') as f:
         data = json.load(f)
+        f.close()
+    if os.path.isfile(f'customers/{flask_login.current_user.id}.txt'):
+        with open(f'customers/{flask_login.current_user.id}.txt', 'a', encoding='utf-8') as txt_file:
+            txt_file.write('\n'.join(data[flask_login.current_user.name]) + '\n')
+            print(1)
+            txt_file.close()
+    else:
+        with open(f'customers/{flask_login.current_user.id}.txt', 'w', encoding='utf-8') as txt_file:
+            txt_file.write('\n'.join(data[flask_login.current_user.name]))
+            print(2)
+            txt_file.close()
     data[flask_login.current_user.name] = []
     with open('static/cart.json', 'w', encoding='utf-8') as f:
         json.dump(data, f)
