@@ -77,7 +77,7 @@ def reqister():
             name=form.name.data,
             age=form.age.data,
             email=form.email.data,
-
+            sum_pr=0
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -177,7 +177,12 @@ def finish():
 
 @app.route('/profile')
 def profile():
-    return render_template("profile.html", title='Профиль')
+    if os.path.isfile(f'customers/{flask_login.current_user.id}.txt'):
+        with open(f'customers/{flask_login.current_user.id}.txt', 'r', encoding='utf-8') as file:
+            orders = file.readlines()
+    else:
+        orders = ['Вы пока что ничего не приобрели в нашем магазине']
+    return render_template("profile.html", title='Профиль', orders=orders)
 
 
 @app.route('/abt')

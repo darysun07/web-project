@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Пользователь: {{ current_user.name }}</h2>
+<h6><b>Пользователь:</b> {{ current_user.name }}</h6>
+<h6><b>Логин:</b> {{ current_user.email }}</h6>
+<h6><b>Возраст:</b> {{ current_user.age }}</h6>
 <br><a href="/logout" class="btn btn-outline-danger">Выйти</a>
-
+<h2 style="text-align: center; font-size: 35px; font-weight: 550;">История заказов:</h2>
+<!--<span>{{orders}}</span>-->
+{%for ord in orders%}
+    <ul type="disc">
+        <li>
+            <h6>{{ord}}</h6>
+        </li>
+    </ul>
+    <!--<br><h6>{{ord}}</h6>-->
+{% endfor %}
 {% endblock %}
