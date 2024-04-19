@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Парфюм 'Hugo Boss'",
+        "description": "5155",
+        "image": "static/img/hugo_boss.jpg"
+    },
+    {
+        "name": "Парфюм 'Giorgio Armani'",
+        "description": "12650",
+        "image": "static/img/armani.jpg"
+    }
+]

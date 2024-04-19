@@ -64,7 +64,7 @@ def load_user(user_id):
 
 @app.route("/")
 def index():
-    categories = ['Помада', 'Тушь', 'Пудра', 'Тени']
+    categories = ['Помада', 'Тушь', 'Пудра', 'Тени', 'Парфюм']
     return render_template("index.html", title='Главная', categories=categories)
 
 
@@ -74,11 +74,11 @@ def reqister():
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
             return render_template('register.html', title='Регистрация', form=form,
-                                   message="Пароли не совпадают")
+                                   message="! Пароли не совпадают !")
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Регистрация', form=form,
-                                   message="Такой пользователь уже есть")
+                                   message="! Такой пользователь уже есть !")
         user = User(
             surname=form.surname.data,
             name=form.name.data,
@@ -102,7 +102,7 @@ def login():
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
-        return render_template('login.html', message="Невереный логин или пароль", form=form)
+        return render_template('login.html', message="! Невереный логин или пароль !", form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -130,11 +130,11 @@ def logout():
 @app.route('/cart')
 def cart():
     #global summ
+    if not flask_login.current_user.is_authenticated:
+        return redirect("/login")
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
     summ = user.sum_pr
-    if not flask_login.current_user.is_authenticated:
-        return redirect("/login")
     with open('static/cart.json', encoding='utf-8') as file:
         data = json.load(file)
         if flask_login.current_user.name not in data:
@@ -199,8 +199,18 @@ def profile():
         with open(f'customers/{flask_login.current_user.id}.txt', 'r', encoding='utf-8') as file:
             orders = file.readlines()
     else:
-        orders = ['Вы пока что ничего не приобрели в нашем магазине']
+        orders = ['Вы еще ничего не приобрели в нашем магазине']
     return render_template("profile.html", title='Профиль', orders=orders)
+
+
+@login_required
+@app.route('/profile_del', methods=['GET', 'POST'])
+def delete_profile():
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == flask_login.current_user.id).first()
+    db_sess.delete(user)
+    db_sess.commit()
+    return redirect('/')
 
 
 @app.route('/abt')
