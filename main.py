@@ -25,20 +25,27 @@ cart_prods = {}
 summ = 0
 
 
-def add_to_cart(user, product):
-    global cart_prods, summ
+def add_to_cart(name_user, product):
+    global cart_prods#, summ
     print(product.split()[0].lower())
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
+    #print(user)
     with open(f'static/{product.split()[0].lower()}.json', encoding='utf-8') as f:
         data = json.load(f)
         for i in data:
             if i["name"] == product:
                 cost = i["description"]
-                summ += int(cost)
-    #print(summ)
-    if user not in cart_prods:
-        cart_prods[user] = [f'{product} - {cost}р']
+                if user:
+                    user.sum_pr += int(cost)
+                #summ += int(cost)
+    db_sess.commit()
+    #db_sess.refresh(user)
+    print(user.sum_pr)
+    if name_user not in cart_prods:
+        cart_prods[name_user] = [f'{product} - {cost}р']
     else:
-        cart_prods[user].append(f'{product} - {cost}р')
+        cart_prods[name_user].append(f'{product} - {cost}р')
     with open('static/cart.json', 'w', encoding='utf-8') as file:
         json.dump(cart_prods, file)
 
@@ -101,13 +108,12 @@ def login():
 
 @app.route("/<name_class>", methods=['GET', 'POST'])
 def name_class(name_class):
-    db_sess = db_session.create_session()
     if request.method == 'POST':
         if not flask_login.current_user.is_authenticated:
             return redirect("/login")
         elif flask_login.current_user.is_authenticated:
-            user = flask_login.current_user.name
-            add_to_cart(user, request.form['add'])
+            name_user = flask_login.current_user.name
+            add_to_cart(name_user, request.form['add'])
             #flash('Товар добавлен в корзину')
     product = load_product(name_class)
     return render_template('product.html', title=f'{str(name_class).capitalize()}',
@@ -123,13 +129,18 @@ def logout():
 
 @app.route('/cart')
 def cart():
-    global summ
+    #global summ
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
+    summ = user.sum_pr
     if not flask_login.current_user.is_authenticated:
         return redirect("/login")
     with open('static/cart.json', encoding='utf-8') as file:
         data = json.load(file)
-        prod = data[flask_login.current_user.name]
-        print(prod)
+        if flask_login.current_user.name not in data:
+            prod = []
+        else:
+            prod = data[flask_login.current_user.name]
     return render_template("cart.html", title='Корзина', prod=prod, summ=summ)
 
 
@@ -146,6 +157,9 @@ def cart():
 
 @app.route('/payment', methods=['GET', 'POST'])
 def payment():
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
+    summ = user.sum_pr
     form = PaymentForm()
     if request.method == 'POST':
         return redirect('/finish')
@@ -154,8 +168,12 @@ def payment():
 
 @app.route('/finish')
 def finish():
-    global summ
+    #global summ
     summ = 0
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
+    user.sum_pr = 0
+    db_sess.commit()
     with open('static/cart.json', encoding='utf-8') as f:
         data = json.load(f)
         f.close()

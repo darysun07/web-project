@@ -89,8 +89,13 @@ main {
     min-height:30px;
     min-width: 120px;
     font-size: 19px;
+    transition: background 999999s;
   }
-.button:hover{
+/*.button:hover{
     background-color:#7200a3;
     transition: 0.7s;
+}*/
+button:active {
+  background: #FFFF00;
+  transition: background 0s;
 }
