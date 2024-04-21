@@ -14,6 +14,7 @@ from data import db_session
 from flask_forms.register import RegisterForm
 from flask_forms.login_form import LoginForm
 from data.users import User
+from data.cart_prods import CartProd
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -22,11 +23,10 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 cart_prods = {}
-summ = 0
 
 
 def add_to_cart(name_user, product):
-    global cart_prods#, summ
+    global cart_prods
     print(product.split()[0].lower())
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
@@ -38,16 +38,18 @@ def add_to_cart(name_user, product):
                 cost = i["description"]
                 if user:
                     user.sum_pr += int(cost)
-                #summ += int(cost)
+                    cart_pr = CartProd(name=i["name"],
+                                       cost=int(cost),
+                                       profile=flask_login.current_user.id)
+    db_sess.add(cart_pr)
     db_sess.commit()
-    #db_sess.refresh(user)
     print(user.sum_pr)
     if name_user not in cart_prods:
         cart_prods[name_user] = [f'{product} - {cost}р']
     else:
         cart_prods[name_user].append(f'{product} - {cost}р')
-    with open('static/cart.json', 'w', encoding='utf-8') as file:
-        json.dump(cart_prods, file)
+    #with open('static/cart.json', 'w', encoding='utf-8') as file:
+    #    json.dump(cart_prods, file)
 
 
 def load_product(name_class):
@@ -106,6 +108,13 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
 @app.route("/<name_class>", methods=['GET', 'POST'])
 def name_class(name_class):
     if request.method == 'POST':
@@ -120,20 +129,17 @@ def name_class(name_class):
                            name=f'{str(name_class).capitalize()}', product=product)
 
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect("/")
-
-
 @app.route('/cart')
 def cart():
-    #global summ
     if not flask_login.current_user.is_authenticated:
         return redirect("/login")
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
+    cart_prod = db_sess.query(CartProd.name, CartProd.cost).filter(CartProd.profile == flask_login.current_user.id).all()
+    prods = []
+    for i in cart_prod:
+        prods.append(f'{i[0]} - {i[1]}р')
+        print(prods)
     summ = user.sum_pr
     with open('static/cart.json', encoding='utf-8') as file:
         data = json.load(file)
@@ -141,12 +147,11 @@ def cart():
             prod = []
         else:
             prod = data[flask_login.current_user.name]
-    return render_template("cart.html", title='Корзина', prod=prod, summ=summ)
+    return render_template("cart.html", title='Корзина', prod=prods, summ=summ)
 
 
 #@app.route('/delete/<product>')
 #def delete_c_p(product):
-    #global summ
     # db_sess = db_session.create_session()
     # res = db_sess.query(CartsProduct).filter(CartsProduct.Id == product).first()
     # db_sess.delete(res)
@@ -168,28 +173,33 @@ def payment():
 
 @app.route('/finish')
 def finish():
-    #global summ
-    summ = 0
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
     user.sum_pr = 0
-    db_sess.commit()
-    with open('static/cart.json', encoding='utf-8') as f:
-        data = json.load(f)
-        f.close()
+
+    #with open('static/cart.json', encoding='utf-8') as f:
+        #data = json.load(f)
+        #f.close()
+    cart_pr2 = db_sess.query(CartProd.name, CartProd.cost).filter(CartProd.profile == flask_login.current_user.id).all()
+    data = []
+    for i in cart_pr2:
+        data.append(f'{i[0]}-{i[1]}р')
     if os.path.isfile(f'customers/{flask_login.current_user.id}.txt'):
         with open(f'customers/{flask_login.current_user.id}.txt', 'a', encoding='utf-8') as txt_file:
-            txt_file.write('\n'.join(data[flask_login.current_user.name]) + '\n')
+            txt_file.write('\n'.join(data) + '\n')
             print(1)
             txt_file.close()
     else:
         with open(f'customers/{flask_login.current_user.id}.txt', 'w', encoding='utf-8') as txt_file:
-            txt_file.write('\n'.join(data[flask_login.current_user.name]))
+            txt_file.write('\n'.join(data) + '\n')
             print(2)
             txt_file.close()
-    data[flask_login.current_user.name] = []
-    with open('static/cart.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f)
+    #data[flask_login.current_user.name] = []
+    #with open('static/cart.json', 'w', encoding='utf-8') as f:
+        #json.dump(data, f)
+    cart_pr = CartProd.__table__.delete().where(CartProd.profile == flask_login.current_user.id)
+    db_sess.execute(cart_pr)
+    db_sess.commit()
     return render_template('finish.html', title='Оплачено')
 
 
@@ -211,11 +221,6 @@ def delete_profile():
     db_sess.delete(user)
     db_sess.commit()
     return redirect('/')
-
-
-@app.route('/abt')
-def about():
-    return render_template('abt.html', title='О компании')
 
 
 @app.route('/dveloprs')
