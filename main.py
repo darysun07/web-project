@@ -1,3 +1,4 @@
+# импорт необходимых библиотек
 import json
 import flask_login
 import os.path
@@ -19,6 +20,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
+# функция добавления в корзину; из файла категории-json вынимаем товар, который был добавлен в корзину пользователем и добавляем товар в таблицу бд CartProd; считаем сумму
 def add_to_cart(product):
     print(product.split()[0].lower())
     db_sess = db_session.create_session()
@@ -37,6 +39,7 @@ def add_to_cart(product):
     db_sess.commit()
 
 
+# из json файла загружаем все товары нужной категории
 def load_product(name_cat):
     with open(f'static/{str(name_cat).capitalize()}.json', 'r', encoding='utf-8') as file:
         product = json.load(file)
@@ -55,6 +58,7 @@ def index():
     return render_template("index.html", title='Главная', categories=categories)
 
 
+# регистрация пользователя
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
@@ -80,6 +84,7 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
+# авторизпция пользователя
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -93,6 +98,7 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
+# выход пользователя из аккаунта
 @app.route('/logout')
 @login_required
 def logout():
@@ -100,6 +106,7 @@ def logout():
     return redirect("/")
 
 
+# страница категории товаров
 @app.route("/<name_cat>", methods=['GET', 'POST'])
 def name_class(name_cat):
     if request.method == 'POST':
@@ -112,6 +119,7 @@ def name_class(name_cat):
                            name=f'{str(name_cat).capitalize()}', product=product)
 
 
+# страница корзины
 @app.route('/cart')
 def cart():
     if not flask_login.current_user.is_authenticated:
@@ -126,6 +134,7 @@ def cart():
     return render_template("cart.html", title='Корзина', prod=prods, summ=summ)
 
 
+# страница оплаты
 @app.route('/payment', methods=['GET', 'POST'])
 def payment():
     db_sess = db_session.create_session()
@@ -137,6 +146,7 @@ def payment():
     return render_template('payment.html', title='Оплата', form=form, summ=summ)
 
 
+# страница успешной оплаты заказа; добавление купленных товаров в файл json, названный id пользователя
 @app.route('/finish')
 def finish():
     db_sess = db_session.create_session()
@@ -158,6 +168,7 @@ def finish():
     return render_template('finish.html', title='Оплачено')
 
 
+# страница профиля; загрузка из файла json купленных товаров - истории заказов
 @app.route('/profile')
 def profile():
     if os.path.isfile(f'customers/{flask_login.current_user.id}.txt'):
