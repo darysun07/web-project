@@ -20,7 +20,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-# функция добавления в корзину; из файла категории-json вынимаем товар, который был добавлен в корзину пользователем и добавляем товар в таблицу бд CartProd; считаем сумму
+# функция добавления в корзину;
+# загрузка товара, добавленного в корзину пользователем, из файла-json(категории), добавление товара в таблицу CartProd;
+# подсчет суммы
 def add_to_cart(product):
     print(product.split()[0].lower())
     db_sess = db_session.create_session()
@@ -39,7 +41,7 @@ def add_to_cart(product):
     db_sess.commit()
 
 
-# из json файла загружаем все товары нужной категории
+# загрузка товаров нужной категории из json-файла
 def load_product(name_cat):
     with open(f'static/{str(name_cat).capitalize()}.json', 'r', encoding='utf-8') as file:
         product = json.load(file)
@@ -52,6 +54,7 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
+# главная страница
 @app.route("/")
 def index():
     categories = ['Помада', 'Тушь', 'Пудра', 'Тени', 'Парфюм']
@@ -84,7 +87,7 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-# авторизпция пользователя
+# авторизация пользователя
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -146,7 +149,7 @@ def payment():
     return render_template('payment.html', title='Оплата', form=form, summ=summ)
 
 
-# страница успешной оплаты заказа; добавление купленных товаров в файл json, названный id пользователя
+# страница успешной оплаты заказа; добавление купленных товаров в файл json, создающийся с именем id пользователя
 @app.route('/finish')
 def finish():
     db_sess = db_session.create_session()
