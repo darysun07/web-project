@@ -7,7 +7,6 @@ from flask import Flask, render_template, redirect, request, flash
 from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_forms.payment import PaymentForm
 
-
 from data import db_session
 from flask_forms.register import RegisterForm
 from flask_forms.login_form import LoginForm
@@ -122,7 +121,7 @@ def name_class(name_cat):
             add_to_cart(request.form['add'])
     product = load_product(name_cat)
     return render_template('product.html', title=f'{str(name_cat).capitalize()}',
-                           name=f'{str(translit(f'{name_cat}', 'ru')).capitalize()}', product=product)
+                           name=f'{str(translit(name_cat, 'ru')).capitalize()}', product=product)
 
 
 # страница корзины
@@ -132,7 +131,8 @@ def cart():
         return redirect("/login")
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
-    cart_prod = db_sess.query(CartProd.name, CartProd.cost).filter(CartProd.profile == flask_login.current_user.id).all()
+    cart_prod = db_sess.query(CartProd.name, CartProd.cost).filter(
+        CartProd.profile == flask_login.current_user.id).all()
     prods = []
     for i in cart_prod:
         prods.append(f'{i[0]} - {i[1]}р')
