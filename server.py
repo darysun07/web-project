@@ -196,6 +196,8 @@ def delete_profile():
     user = db_sess.query(User).filter(User.id == flask_login.current_user.id).first()
     db_sess.delete(user)
     db_sess.commit()
+    if os.path.isfile(f'customers/{flask_login.current_user.id}.txt'):
+        os.remove(f'customers/{flask_login.current_user.id}.txt')
     return redirect('/')
 
 
@@ -205,6 +207,8 @@ def developers():
 
 
 def main():
+    if not os.path.isdir("db"):
+        os.mkdir("db")
     db_session.global_init("db/logged_users.sqlite")
     app.run(port=8080, host='127.0.0.1')
 
