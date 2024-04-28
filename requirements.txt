@@ -7,3 +7,4 @@ WTForms
 Flask-Login
 Flask-WTF
 WTForms
+transliterate

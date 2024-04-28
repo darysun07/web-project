@@ -2,6 +2,7 @@
 import json
 import flask_login
 import os.path
+from transliterate import translit
 from flask import Flask, render_template, redirect, request, flash
 from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_forms.payment import PaymentForm
@@ -25,8 +26,9 @@ login_manager.init_app(app)
 # подсчет суммы
 def add_to_cart(product):
     db_sess = db_session.create_session()
+    name_file = translit(product.split()[0].lower(), 'ru', reversed=True)
     user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
-    with open(f'static/{product.split()[0].lower()}.json', encoding='utf-8') as f:
+    with open(f'static/{name_file}.json', encoding='utf-8') as f:
         data = json.load(f)
         for i in data:
             if i["name"] == product:
@@ -42,7 +44,7 @@ def add_to_cart(product):
 
 # загрузка товаров нужной категории из json-файла
 def load_product(name_cat):
-    with open(f'static/{str(name_cat).capitalize()}.json', 'r', encoding='utf-8') as file:
+    with open(f'static/{str(name_cat)}.json', 'r', encoding='utf-8') as file:
         product = json.load(file)
         return product
 
@@ -56,7 +58,7 @@ def load_user(user_id):
 # главная страница
 @app.route("/")
 def index():
-    categories = ['Помада', 'Тушь', 'Пудра', 'Тени', 'Парфюм']
+    categories = {"Помада": "pomada", "Тушь": "tush'", "Пудра": "pudra", "Тени": "teni", "Парфюм": "parfjum"}
     return render_template("index.html", title='Главная', categories=categories)
 
 

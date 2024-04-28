@@ -3,10 +3,10 @@
 {% block content %}
 <h2 align="center">Магазин косметики PODASH</h2>
 <h3>Категории</h3>
-{%for category in categories%}
+{%for key, value in categories.items()%}
 <ul type="disc">
     <li class="nav-cat">
-        <a href="/{{category}}">{{category}}</a>
+        <a href="/{{value}}">{{key}}</a>
     </li>
 </ul>
 {%endfor%}
