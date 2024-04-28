@@ -58,6 +58,8 @@ def load_user(user_id):
 # главная страница
 @app.route("/")
 def index():
+    if not os.path.isdir("customers"):
+        os.mkdir("customers")
     categories = {"Помада": "pomada", "Тушь": "tush'", "Пудра": "pudra", "Тени": "teni", "Парфюм": "parfjum"}
     return render_template("index.html", title='Главная', categories=categories)
 
@@ -120,7 +122,7 @@ def name_class(name_cat):
             add_to_cart(request.form['add'])
     product = load_product(name_cat)
     return render_template('product.html', title=f'{str(name_cat).capitalize()}',
-                           name=f'{str(name_cat).capitalize()}', product=product)
+                           name=f'{str(translit(f'{name_cat}', 'ru')).capitalize()}', product=product)
 
 
 # страница корзины
