@@ -2,11 +2,22 @@
 
 {% block content %}
 <h1>Оплата</h1>
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <h4>{{ message }}</h4>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <p>
         {{ form.card.label }}
         {{ form.card(class="form-control", type="int") }}
+    </p>
+    <p>
+        {{ form.name_recipient.label }}
+        {{ form.name_recipient(class="form-control", type="text") }}
     </p>
     <p>
         {{ form.address.label }}

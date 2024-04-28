@@ -1,8 +1,9 @@
 # импорт необходимых библиотек
 import json
+import re
 import flask_login
 import os.path
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, flash
 from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_forms.payment import PaymentForm
 
@@ -24,7 +25,6 @@ login_manager.init_app(app)
 # загрузка товара, добавленного в корзину пользователем, из файла-json(категории), добавление товара в таблицу CartProd;
 # подсчет суммы
 def add_to_cart(product):
-    print(product.split()[0].lower())
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.name == flask_login.current_user.name).first()
     with open(f'static/{product.split()[0].lower()}.json', encoding='utf-8') as f:
@@ -145,7 +145,11 @@ def payment():
     summ = user.sum_pr
     form = PaymentForm()
     if request.method == 'POST':
-        return redirect('/finish')
+        card = str(request.form.get('card')).replace(' ', '')
+        if len(card) != 16 or not card.isdigit():
+            flash('! Неверный формат ввода карты !')
+        else:
+            return redirect('/finish')
     return render_template('payment.html', title='Оплата', form=form, summ=summ)
 
 
