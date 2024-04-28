@@ -120,8 +120,8 @@ def name_class(name_cat):
         elif flask_login.current_user.is_authenticated:
             add_to_cart(request.form['add'])
     product = load_product(name_cat)
-    return render_template('product.html', title=f'{str(name_cat).capitalize()}',
-                           name=f'{str(translit(name_cat, 'ru')).capitalize()}', product=product)
+    return render_template('product.html', title=str(name_cat).capitalize(),
+                           name=str(translit(name_cat, "ru")).capitalize(), product=product)
 
 
 # страница корзины
