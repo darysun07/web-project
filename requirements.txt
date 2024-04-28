@@ -5,3 +5,5 @@ Jinja2
 Flask
 WTForms
 Flask-Login
+Flask-WTF
+WTForms
