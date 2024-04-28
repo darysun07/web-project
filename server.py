@@ -1,6 +1,5 @@
 # импорт необходимых библиотек
 import json
-import re
 import flask_login
 import os.path
 from flask import Flask, render_template, redirect, request, flash

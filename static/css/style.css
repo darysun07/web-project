@@ -91,10 +91,6 @@ main {
     font-size: 19px;
     transition: background 999999s;
   }
-/*.button:hover{
-    background-color:#7200a3;
-    transition: 0.7s;
-}*/
 button:active {
   background: #FFFF00;
   transition: background 0s;
