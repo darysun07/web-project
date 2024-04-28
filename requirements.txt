@@ -4,3 +4,4 @@ pip
 Jinja2
 Flask
 WTForms
+Flask-Login
